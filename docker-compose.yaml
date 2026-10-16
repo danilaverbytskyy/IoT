@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:2.14.2-pg16
+    container_name: timescaledb
+    environment:
+      POSTGRES_DB: iot_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5433:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 1500M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d iot_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  superset:
+    build: ./superset
+    container_name: superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=super-secret-key-change-me-in-production-12345
+    volumes:
+      - superset_home:/app/superset_home
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  timescaledb_data:
+  superset_home:
