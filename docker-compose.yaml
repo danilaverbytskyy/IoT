@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  timescaledb:
+  db:
     image: timescale/timescaledb:2.14.2-pg16
-    container_name: timescaledb
+    container_name: db
     environment:
       POSTGRES_DB: iot_db
       POSTGRES_USER: postgres
@@ -33,9 +33,25 @@ services:
     volumes:
       - superset_home:/app/superset_home
     depends_on:
-      timescaledb:
+      db:
         condition: service_healthy
     restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgrespassword@db:5432/iot_db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
 
 volumes:
   timescaledb_data:

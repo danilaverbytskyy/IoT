@@ -8,8 +8,3 @@ create table if not exists sensors_data (
     light REAL,
     voltage REAL
 );
-
-SELECT
-  pg_size_pretty(pg_relation_size('sensors_data'))        AS table_only,
-  pg_size_pretty(pg_indexes_size('sensors_data'))         AS indexes,
-  pg_size_pretty(pg_total_relation_size('sensors_data'))  AS total;

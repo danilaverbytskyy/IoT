@@ -15,7 +15,7 @@ cols = [
 ]
 
 df = pd.read_csv(
-    '../data/data.txt',
+    '../../data/data.txt',
     sep=r'\s+',
     header=None,
     names=cols,
