@@ -2,7 +2,7 @@
 __pycache__/
 .idea
 init-scripts
-data/
+backend/data/
 *.py[codz]
 *$py.class
 

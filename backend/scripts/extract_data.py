@@ -15,7 +15,7 @@ cols = [
 ]
 
 df = pd.read_csv(
-    '../../data/data.txt',
+    '../data/data.txt',
     sep=r'\s+',
     header=None,
     names=cols,
@@ -40,11 +40,11 @@ df['mote_id'] = df['mote_id'].astype('int16')
 df_to_db = df.reset_index()
 
 conn = psycopg2.connect(
-    dbname='iot_db',
-    user='postgres',
-    password='postgrespassword',
-    host='localhost',
-    port=5433,
+    dbname="iot_db",
+    user="postgres",
+    password="postgrespassword",
+    host="db",
+    port=5432,
 )
 cur = conn.cursor()
 
